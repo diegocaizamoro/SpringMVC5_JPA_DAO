@@ -35,6 +35,8 @@ public class Cliente implements Serializable{
     @Email
 	private String mail;
     
+    private String foto;
+    
     
     @Column(name="fecha")
 	@NotNull
@@ -79,6 +81,14 @@ public class Cliente implements Serializable{
 
 	public void setFechaCreacion(Date fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
 	
 	
