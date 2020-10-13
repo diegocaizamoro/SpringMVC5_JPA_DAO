@@ -12,22 +12,26 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.boot.dao.IClienteDao;
 import com.boot.modelo.Cliente;
+import com.boot.servicio.IClienteServicio;
 
 @Controller
+@SessionAttributes("cliente")
 public class ClienteControlador {
 
 	@Autowired
-	private IClienteDao iClienteDao;
+	private IClienteServicio iClienteServicio;  //inyecto la clase servicio para acceder a sus metodos
 
+	//localhost:8080/listar   lista en un html todos los clientes
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public String listarClientes(Model model) {
 
 		model.addAttribute("titulo", "Listado de clientes");
-		model.addAttribute("clientes", iClienteDao.findAll());
+		model.addAttribute("clientes", iClienteServicio.findAll());
 		return "listar";
 
 	}
@@ -45,7 +49,7 @@ public class ClienteControlador {
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> map) {
 		Cliente cliente = null;
 		if (id > 0) {
-			cliente = iClienteDao.findOne(id);
+			cliente = iClienteServicio.findOne(id);
 		} else {
 			return "redirect:/listar";
 		}
@@ -62,7 +66,7 @@ public class ClienteControlador {
 			return "formulario";
 
 		} else {
-			iClienteDao.save(cliente);
+			iClienteServicio.save(cliente);
 			status.setComplete();
 			return "redirect:/listar";
 		}
@@ -72,7 +76,7 @@ public class ClienteControlador {
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id) {
 		if (id > 0) {
-			iClienteDao.delete(id);
+			iClienteServicio.delete(id);
 		} 
 		return "redirect:/listar";
 	}

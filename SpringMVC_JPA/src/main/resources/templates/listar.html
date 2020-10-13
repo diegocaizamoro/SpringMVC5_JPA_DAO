@@ -32,13 +32,14 @@
 							<td th:text="${cliente.id}"></td>
 							<td th:text="${cliente.nombre}"></td>
 							<td th:text="${cliente.apellido}"></td>
-							<td th:text="${cliente.email}"></td>
+							<td th:text="${cliente.mail}"></td>
 							<td th:text="${cliente.fechaCreacion}"></td>
+							
 							<td><a class="btn btn-primary btn-sm"
 								th:href="@{/formulario/} + ${cliente.id}" th:text="'editar'"></a></td>
 							<td><a class="btn btn-danger btn-sm"
 								th:href="@{/eliminar/} + ${cliente.id}" th:text="'eliminar'"
-								onclick="return confirm('Est�s seguro que quieres eliminar?');"></a></td>
+								onclick="return confirm('Estás seguro que quieres eliminar?');"></a></td>
 						</tr>
 					</tbody>
 

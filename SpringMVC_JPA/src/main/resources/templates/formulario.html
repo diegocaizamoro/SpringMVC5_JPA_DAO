@@ -38,24 +38,24 @@
 					<div class="form-group row">
 						<label class="col-sm-2 col-form-label">Email</label>
 						<div class="col-sm-6">
-							<input type="text" th:field="*{email}" class="form-control"
+							<input type="text" th:field="*{mail}" class="form-control"
 								th:errorclass="'form-control alert-danger'" /> <small
 								class="form-text text-danger"
-								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+								th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}"></small>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label class="col-sm-2 col-form-label">Fecha</label>
 						<div class="col-sm-6">
-							<input type="text" class="form-control" th:field="*{createAt}"
+							<input type="text" class="form-control" th:field="*{fechaCreacion}"
 								th:errorclass="'form-control alert-danger'" /> <small
 								class="form-text text-danger"
-								th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}"></small>
+								th:if="${#fields.hasErrors('fechaCreacion')}" th:errors="*{fechaCreacion}"></small>
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-sm-6">
-							<input type="submit" value="Crear Cliente" class="btn btn-secondary" />
+							<input type="submit" value="Guardar Cliente" class="btn btn-secondary" />
 						</div>
 					</div>
 

@@ -20,14 +20,13 @@ public class IClienteDaoImpl implements IClienteDao {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	@Transactional(readOnly = true)
+	
 	public List<Cliente> findAll() {
 		
 		return entityManage.createQuery("from Cliente").getResultList();
 	}
 
 	@Override
-	@Transactional
 	public void save(Cliente cliente) {
 		if(cliente.getId()!=null && cliente.getId()>0) {
 			entityManage.merge(cliente); //actualiza
@@ -37,14 +36,14 @@ public class IClienteDaoImpl implements IClienteDao {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
+	
 	public Cliente findOne(Long id) {
 		return entityManage.find(Cliente.class,id);
 
 	}
 
 	@Override
-	@Transactional
+	
 	public void delete(Long id) {
 		entityManage.remove(findOne(id));
 	}
