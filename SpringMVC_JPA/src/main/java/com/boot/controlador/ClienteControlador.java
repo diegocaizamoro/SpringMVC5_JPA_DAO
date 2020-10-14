@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.boot.modelo.Cliente;
 import com.boot.servicio.IClienteServicio;
 import com.boot.servicio.ISubidaDeArchivosService;
@@ -47,6 +49,23 @@ public class ClienteControlador {
 				+ recurso.getFilename() + "\"");
 		
 	}
+	
+	@GetMapping(value = "/ver/{id}")
+	public String ver(@PathVariable Long id,Map<String, Object> map, RedirectAttributes flash ) {
+		
+		Cliente cliente=iClienteServicio.findOne(id);
+		if(cliente==null) {
+			flash.addFlashAttribute("error","El cliente no existe en la base de datos");
+			return "redirect:/listar";
+		}else {
+			map.put("cliente", cliente);
+			map.put("titulo", "Detalle cliente: "+cliente.getNombre());
+			return "ver";
+		}
+		
+	}
+	
+	
 
 	//localhost:8080/listar   lista en un html todos los clientes
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
