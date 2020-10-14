@@ -146,9 +146,11 @@ public class ClienteControlador {
 	}
 	
 	@RequestMapping(value = "/eliminar/{id}")
-	public String eliminar(@PathVariable(value = "id") Long id) {
+	public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 		if (id > 0) {
 			iClienteServicio.delete(id);
+			flash.addFlashAttribute("success","Cliente eliminado con exito" );
+
 		} 
 		return "redirect:/listar";
 	}
