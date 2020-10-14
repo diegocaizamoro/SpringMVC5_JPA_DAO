@@ -29,7 +29,7 @@ public class ISubidaArchivosImpl implements ISubidaDeArchivosService {
 		
 		Path pathFoto=getPath(filename);
 		log.info("pathFoto: " +pathFoto);
-		Resource recurso=new UrlResource(pathFoto.toString());
+		Resource recurso=new UrlResource(pathFoto.toUri());
 		  
 		if(!recurso.exists() || !recurso.isReadable()) {
 			throw new RuntimeException("Error no se puede cargar la imagen: "+ pathFoto.toString());

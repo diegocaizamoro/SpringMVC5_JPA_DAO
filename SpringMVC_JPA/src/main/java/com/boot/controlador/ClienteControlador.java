@@ -36,11 +36,11 @@ public class ClienteControlador {
 	ISubidaDeArchivosService iSubidaDeArchivosService;
 	
 	
-	@SuppressWarnings("unchecked")
+	//@SuppressWarnings("unchecked")
 	@GetMapping(value="/uploads/{filename:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String filename){
 		
-		Resource recurso=null;
+		Resource recurso = null;
 		try {
 			recurso= iSubidaDeArchivosService.load(filename);
 			
@@ -48,8 +48,11 @@ public class ClienteControlador {
 			
 			e.printStackTrace();
 		} 
-		return (ResponseEntity<Resource>) ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\""
-				+ recurso.getFilename() + "\"");
+		//return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\""
+				//+ recurso.getFilename() + "\"");
+		
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + recurso.getFilename()
+		+ "\"").body(recurso);
 		
 	}
 	
