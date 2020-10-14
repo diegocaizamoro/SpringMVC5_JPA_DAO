@@ -1,5 +1,6 @@
 package com.boot.controlador;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Map;
 import javax.validation.Valid;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.boot.modelo.Cliente;
@@ -101,16 +104,41 @@ public class ClienteControlador {
 	}
 
 	@RequestMapping(value = "/formulario", method = RequestMethod.POST)
-	public String guardar(@Valid Cliente cliente, BindingResult resul, Map<String, Object> map, SessionStatus status) {
+	public String guardar(@Valid Cliente cliente, BindingResult resul,
+			RedirectAttributes flash,
+			Map<String, Object> map, SessionStatus status,
+			@RequestParam("file") MultipartFile foto) {
 		if (resul.hasErrors()) {
 			map.put("titulo", "Formulario Cliente");
 			return "formulario";
 
-		} else {
-			iClienteServicio.save(cliente);
-			status.setComplete();
-			return "redirect:/listar";
+		} 
+		if(!foto.isEmpty()) {
+			if(cliente.getId() !=null && cliente.getId()>0 && cliente.getFoto()!=null  
+				&& cliente.getFoto().length()>0) {
+				iSubidaDeArchivosService.delete(cliente.getFoto());
+			}
+			
+			String uniqueFileName=null;
+			
+			try {
+				//almaceno en la carpeta la foto
+				uniqueFileName=iSubidaDeArchivosService.copy(foto);
+			}catch(IOException e) {
+				e.printStackTrace();
+			}
+			flash.addFlashAttribute("info","Has subido exitosamente la foto. "+ uniqueFileName );
+			cliente.setFoto(uniqueFileName);
+			
 		}
+		
+		String mensajeFlash=(cliente.getId()!=null) ? "Cliente editado con exito" : "Cliente credo con exito";
+		iClienteServicio.save(cliente);
+		status.setComplete();
+		flash.addFlashAttribute("succes",mensajeFlash );
+		return "redirect:/listar";
+		
+
 
 	}
 	
