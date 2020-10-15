@@ -98,7 +98,7 @@ public class PageRender<T> {
     
 	
     //metodo boolean que devuelve si estamos navegando hACIA atras
-    public boolean isHasPrevios() {
+    public boolean isHasPrevious() {
     	return page.hasPrevious();
     }
     
