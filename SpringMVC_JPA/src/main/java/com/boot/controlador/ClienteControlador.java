@@ -6,6 +6,9 @@ import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.boot.modelo.Cliente;
 import com.boot.servicio.IClienteServicio;
 import com.boot.servicio.ISubidaDeArchivosService;
+import com.boot.util.paginador.PageRender;
 
 @Controller
 @SessionAttributes("cliente")
@@ -60,6 +64,8 @@ public class ClienteControlador {
 	public String ver(@PathVariable Long id,Map<String, Object> map, RedirectAttributes flash ) {
 		
 		Cliente cliente=iClienteServicio.findOne(id);
+		//Cliente cliente=iClienteServicio.buscarPorId(id);  
+		//Cliente cliente2=iClienteServicio.findByNombre(cliente.getNombre());
 		if(cliente==null) {
 			flash.addFlashAttribute("error","El cliente no existe en la base de datos");
 			return "redirect:/listar";
@@ -75,10 +81,20 @@ public class ClienteControlador {
 
 	//localhost:8080/listar   lista en un html todos los clientes
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public String listarClientes(Model model) {
+	public String listarClientes(@RequestParam(name="page", defaultValue ="0") int page,Model model) {
+       
+		//creo la paginacion con el numero de pagina que envio desde la url
+		Pageable pageRequest=PageRequest.of(page, 4);
+		 Page<Cliente> clientes=iClienteServicio.findAll(pageRequest);
+		 
+		 //enviamos la lista de elementos al Pagerender seteando la url /listar 
+		 PageRender<Cliente> pageRender=new PageRender<Cliente>("/listar", clientes);
 
 		model.addAttribute("titulo", "Listado de clientes");
-		model.addAttribute("clientes", iClienteServicio.findAll());
+		//enviamos la lista de clientes a la tabla de la pagina html junto con el pageRender
+		model.addAttribute("clientes", clientes);
+		model.addAttribute("page", pageRender);
+		
 		return "listar";
 
 	}

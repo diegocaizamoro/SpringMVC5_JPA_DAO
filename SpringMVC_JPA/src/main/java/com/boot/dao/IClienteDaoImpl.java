@@ -1,18 +1,14 @@
-package com.boot.dao;
+/*package com.boot.dao;
 
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.boot.modelo.Cliente;
 
-
 @Repository
-public class IClienteDaoImpl implements IClienteDao {
+public class IClienteDaoImpl implements IClienteDao 
+{
 
 	@PersistenceContext
 	private EntityManager entityManage;
@@ -48,4 +44,4 @@ public class IClienteDaoImpl implements IClienteDao {
 		entityManage.remove(findOne(id));
 	}
 
-}
+}*/
